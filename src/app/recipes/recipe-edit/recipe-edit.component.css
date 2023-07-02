@@ -1,0 +1,12 @@
+input {
+  margin-top: 0.5em !important;
+}
+
+#ingredients {
+  max-width: 35rem !important;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border-bottom: 2px solid red;
+}
