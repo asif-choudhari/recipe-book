@@ -12,7 +12,7 @@ import { AmountValidators } from '../../shared/validators/amount.validator';
 export class ShoppingEditComponent implements OnInit {
   shoppingListForm: FormGroup;
   editMode = false;
-  editIndex: number;
+  editId: number;
   editIngredient: Ingredient;
 
   constructor(private _shoppingListService: ShoppingListService) {}
@@ -23,11 +23,11 @@ export class ShoppingEditComponent implements OnInit {
       amount: new FormControl(null, [Validators.required, AmountValidators.negativeNumberValidator]),
     });
 
-    this._shoppingListService.editingIngredient.subscribe(
-      (index: number) => {
-        this.editIndex = index;
+    this._shoppingListService.editingIngredient$.subscribe(
+      (id: number) => {
+        this.editId = id;
         this.editMode = true;
-        this.editIngredient = this._shoppingListService.getIngredient(index);
+        this.editIngredient = this._shoppingListService.getIngredientById(id);
         this.shoppingListForm.patchValue({
           name: this.editIngredient.name,
           amount: this.editIngredient.amount
@@ -48,9 +48,9 @@ export class ShoppingEditComponent implements OnInit {
   onFormSubmit(): void {
     const name = this.shoppingListForm.get('name').value;
     const amount = this.shoppingListForm.get('amount').value;
-    const newIngredient = new Ingredient(name, amount);
+    const newIngredient = new Ingredient(0, name, amount);
     if(this.editMode) {
-      this._shoppingListService.editIngredient(this.editIndex, newIngredient);
+      this._shoppingListService.editIngredient(this.editId, newIngredient);
     } else {
       this._shoppingListService.addIngredient(newIngredient);
     }
@@ -58,7 +58,7 @@ export class ShoppingEditComponent implements OnInit {
   }
 
   onDeleteItem(): void {
-    this._shoppingListService.deleteIngredient(this.editIndex);
+    this._shoppingListService.deleteIngredient(this.editId);
     this.resetForm();
   }
 }
