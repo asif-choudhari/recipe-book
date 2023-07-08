@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { API_CONFIG } from 'src/app/shared/configs/api.config';
 import { Ingredient } from 'src/app/shared/models/ingredient.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingListService {
-  private url = 'https://localhost:7131/api/ingredient/';
+  private readonly url = API_CONFIG.baseUrl + '/api/ingredient';
   ingredientsChanged$ = new Subject<Ingredient[]>();
   editingIngredient$ = new Subject<number>();
 
@@ -16,7 +17,7 @@ export class ShoppingListService {
   constructor(private http: HttpClient) { }
 
   getIngredientList(): void {
-    this.http.get<Ingredient[]>(this.url+'getIngredientsList')
+    this.http.get<Ingredient[]>(this.url+'/getIngredientsList')
     .subscribe(
       (response) => {
         this.ingredients = response as Ingredient[];
@@ -32,7 +33,7 @@ export class ShoppingListService {
   }
 
   addIngredient(ingredient: Ingredient): void {
-    this.http.post<Ingredient>(this.url+'addIngredient', ingredient)
+    this.http.post<Ingredient>(this.url+'/addIngredient', ingredient)
     .subscribe(
       (response) => {
         this.getIngredientList();
@@ -47,7 +48,7 @@ export class ShoppingListService {
   }
 
   editIngredient(id: number, ingredient: Ingredient): void {
-    this.http.put(this.url+'updateIngredient', ingredient, { params: { id: id } })
+    this.http.put(this.url+'/updateIngredient', ingredient, { params: { id: id } })
     .subscribe((response) => {
       this.getIngredientList();
       console.log('Added Successfully....');
@@ -55,7 +56,7 @@ export class ShoppingListService {
   }
 
   deleteIngredient(id: number): void {
-    this.http.delete(this.url+'deleteIngredient', { params: { id: id } })
+    this.http.delete(this.url+'/deleteIngredient', { params: { id: id } })
     .subscribe((response) => {
       this.getIngredientList();
       console.log("Deleted Successfully....");
