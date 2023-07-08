@@ -51,7 +51,7 @@ export class ShoppingListService {
     this.http.put(this.url+'/updateIngredient', ingredient, { params: { id: id } })
     .subscribe((response) => {
       this.getIngredientList();
-      console.log('Added Successfully....');
+      console.log('Updated Successfully....');
     });
   }
 
