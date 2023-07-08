@@ -3,43 +3,62 @@ import { Recipe } from 'src/app/recipes/recipe.model';
 import { ShoppingListService } from '../shopping/shopping-list.service';
 import { Ingredient } from 'src/app/shared/models/ingredient.model';
 import { Subject } from 'rxjs';
+import { API_CONFIG } from 'src/app/shared/configs/api.config';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-  recipesChanged = new Subject<Recipe[]>();
-  private recipes: Recipe[] = [
-    new Recipe('Test Recipe 1', 'Testing the recipe', 'https://images.unsplash.com/photo-1688152853061-06bd109e6c0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60',[new Ingredient('French Fries', 20), new Ingredient('Meat', 1)]),
-    new Recipe('Test Recipe 2', 'Testing the recipe', 'https://www.bibbyskitchenat36.com/wp-content/uploads/2021/01/DSC_9104-1.jpg',[new Ingredient('Buns', 2), new Ingredient('Meat', 1)])
-  ];
+  private readonly url = API_CONFIG.baseUrl + '/api/recipe';
+  recipesChanged$ = new Subject<Recipe[]>();
 
-  constructor(private shoppingListService: ShoppingListService) { }
+  private recipes: Recipe[] = [];
 
-  getRecipe(id: number): Recipe {
-    return this.recipes[id];
+  constructor(private http: HttpClient,
+    private shoppingListService: ShoppingListService) { }
+
+  getRecipesList(): void {
+    this.http.get<Recipe[]>(this.url+'/getRecipesList')
+    .subscribe(
+      (response) => {
+        this.recipes = response as Recipe[];
+        this.recipesChanged$.next(this.recipes.slice());
+      }
+    );
   }
-  getRecipes(): Recipe[] {
-    return this.recipes.slice();
+
+  getRecipeById(id: number): Recipe {
+    let recipe: Recipe = this.recipes.find(recipe => recipe.id === id);
+    return recipe;
   }
 
   onAddToShoppingList(ingredients: Ingredient[]) {
     this.shoppingListService.addIngredients(ingredients);
   }
 
-  addRecipe(recipe: Recipe) {
-    this.recipes.push(recipe);
-    this.recipesChanged.next(this.recipes.slice());
+  addRecipe(recipe: Recipe): void {
+    this.http.post<Ingredient>(this.url+'/addRecipe', recipe)
+    .subscribe((response) => {
+      this.getRecipesList();
+      console.log('Added Successfully....');
+    })
   }
 
-  editRecipe(index: number, recipe: Recipe) {
-    this.recipes[index] = recipe;
-    this.recipesChanged.next(this.recipes.slice());
+  editRecipe(id: number, recipe: Recipe): void {
+    this.http.put(this.url+'/updateRecipe', recipe, { params: { id: id } })
+    .subscribe((response) => {
+      this.getRecipesList();
+      console.log('Updated Successfully....');
+    });
   }
 
-  deleteRecipe(index: number) {
-    this.recipes.splice(index,1);
-    this.recipesChanged.next(this.recipes.slice());
+  deleteRecipe(id: number) {
+    this.http.delete(this.url+'/deleteRecipe', { params: { id: id } })
+    .subscribe((response) => {
+      this.getRecipesList();
+      console.log("Deleted Successfully....");
+    });
   }
 
 }

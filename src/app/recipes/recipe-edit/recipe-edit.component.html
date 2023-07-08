@@ -5,8 +5,8 @@
         <div class="xol-xs-12">
           <button class="btn btn-success"
           [disabled]="!recipeForm.valid"
-          type="submit">{{ editMode ? 'Update' : 'Save'}}</button>
-          <button class="btn btn-danger" (click)="redirectToRecipes()">Cancel</button>
+          type="submit" id="save-update-btn">{{ editMode ? 'Update' : 'Save'}}</button>
+          <button class="btn btn-danger" (click)="redirectToRecipes()" id="cancel-btn">Cancel</button>
         </div>
       </div>
       <hr>
@@ -28,9 +28,9 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <img [src]="imgURL.value" alt="Image not loaded">
+      <div class="row" *ngIf="!(imgURL.value === '')">
+        <div class="col-xs-12" >
+          <img [src]="imgURL.value" alt="Image not loaded" class="img-responsive" style="max-height: 200px">
         </div>
       </div>
       <div class="row">
@@ -59,12 +59,13 @@
               <div class="col-xs-2">
                 <button type="button"
                 class="btn btn-danger"
-                (click)="onDeleteIngredient(i)">X</button>
+                (click)="onDeleteIngredient(i)"
+                id="ingredient-cancel-btn">X</button>
               </div>
             </div>
-
         </div>
       </div>
+      <hr>
     </form>
   </div>
 </div>

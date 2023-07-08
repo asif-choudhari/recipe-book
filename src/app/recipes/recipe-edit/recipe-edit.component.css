@@ -10,3 +10,12 @@ input.ng-invalid.ng-touched,
 textarea.ng-invalid.ng-touched {
   border-bottom: 2px solid red;
 }
+
+#ingredient-cancel-btn {
+  margin-top: 7px;
+}
+
+#save-update-btn,
+#cancel-btn {
+  margin-left: 15px;
+}
