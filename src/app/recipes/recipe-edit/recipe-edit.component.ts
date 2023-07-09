@@ -41,21 +41,29 @@ export class RecipeEditComponent implements OnInit {
       this.recipeService.getRecipeById(this.id)
       .subscribe((response) => {
         recipe = response as Recipe;
-      });;
-      name = recipe.name;
-      image = recipe.imagePath;
-      description = recipe.description;
+        name = recipe.name;
+        image = recipe.imagePath;
+        description = recipe.description;
 
-      if (recipe['ingredients']) {
-        for(var ingredient of recipe.ingredients) {
-          ingredientsArray.push(
-            new FormGroup({
-              'name': new FormControl(ingredient.name, Validators.required),
-              'amount': new FormControl(ingredient.amount, Validators.required, AmountValidators.asyncNegativeNumberValidator)
-            })
-          );
+        if (recipe['ingredients']) {
+          for(var ingredient of recipe.ingredients) {
+            ingredientsArray.push(
+              new FormGroup({
+                'name': new FormControl(ingredient.name, Validators.required),
+                'amount': new FormControl(ingredient.amount, Validators.required, AmountValidators.asyncNegativeNumberValidator)
+              })
+            );
+          }
         }
-      }
+
+        this.recipeForm = new FormGroup({
+          'name': new FormControl(name, Validators.required),
+          'imgUrl': new FormControl(image, Validators.required),
+          'description': new FormControl(description, Validators.required),
+          'ingredients' : ingredientsArray
+        });
+      });
+      return;
     }
 
     this.recipeForm = new FormGroup({
