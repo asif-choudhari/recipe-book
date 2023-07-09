@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Recipe } from 'src/app/recipes/recipe.model';
 import { ShoppingListService } from '../shopping/shopping-list.service';
 import { Ingredient } from 'src/app/shared/models/ingredient.model';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { API_CONFIG } from 'src/app/shared/configs/api.config';
 import { HttpClient } from '@angular/common/http';
 
@@ -28,9 +28,8 @@ export class RecipeService {
     );
   }
 
-  getRecipeById(id: number): Recipe {
-    let recipe: Recipe = this.recipes.find(recipe => recipe.id === id);
-    return recipe;
+  getRecipeById(id: number): Observable<any> {
+    return this.http.get<Recipe>(this.url+'/getRecipeById', { params : { id: id }});
   }
 
   onAddToShoppingList(ingredients: Ingredient[]) {

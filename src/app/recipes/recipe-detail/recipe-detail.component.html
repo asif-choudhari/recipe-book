@@ -1,38 +1,47 @@
-<div class="row">
+<div class="row" *ngIf="!recipeLoaded">
+  <div class="col-xs-12">
+      Loading Recipe...
+      <hr>
+  </div>
+</div>
+
+<div *ngIf="recipeLoaded">
+  <div class="row">
     <div class="col-xs-12">
         <img [src]="recipe.imagePath" [alt]="recipe.name" class="img-responsive" style="max-height: 250px">
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <h1>Recipe Name : {{recipe.name}}</h1>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <div class="btn-group" appDropdown>
-            <button type="button" class="btn btn-primary dropdown-toggle">
-                Manage recipe <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a style="cursor: pointer;" [routerLink]="['edit']">Edit Recipe</a></li>
-                <li><a style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Recipes</a></li>
-                <li><a (click)="onAddToShoppingList()" style="cursor: pointer;">Add to Shopping List</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <div class="col-xs-12">
-        Description : {{recipe.description}}
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <p>Ingedrients : </p>
-        <p *ngFor="let item of recipe.ingredients; let i = index">
-        {{i+1}}. {{item.name}} ({{item.amount}})
-        </p>
-    </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-12">
+          <h1>Recipe Name : {{recipe.name}}</h1>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-12">
+          <div class="btn-group" appDropdown>
+              <button type="button" class="btn btn-primary dropdown-toggle">
+                  Manage recipe <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                  <li><a style="cursor: pointer;" [routerLink]="['edit']">Edit Recipe</a></li>
+                  <li><a style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Recipes</a></li>
+                  <li><a (click)="onAddToShoppingList()" style="cursor: pointer;">Add to Shopping List</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <hr>
+  <div class="row">
+      <div class="col-xs-12">
+          Description : {{recipe.description}}
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-12">
+          <p>Ingedrients : </p>
+          <p *ngFor="let item of recipe.ingredients; let i = index">
+          {{i+1}}. {{item.name}} ({{item.amount}})
+          </p>
+      </div>
+  </div>
 </div>
