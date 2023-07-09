@@ -19,3 +19,9 @@ textarea.ng-invalid.ng-touched {
 #cancel-btn {
   margin-left: 15px;
 }
+
+@media only screen and (min-width: 992px) {
+  #edit-comp {
+    border-right: 3px solid darkgrey;
+  }
+}
