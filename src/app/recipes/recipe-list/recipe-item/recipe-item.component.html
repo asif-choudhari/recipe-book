@@ -4,7 +4,7 @@
           {{ recipe.name }}
       </h4>
       <p class="list-group-item-text">
-          {{ recipe.description }}
+          {{ recipe.description | short: 30}}
       </p>
   </div>
   <span class="pull-right">

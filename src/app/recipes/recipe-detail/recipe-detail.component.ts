@@ -9,8 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
-  recipe: Recipe;
+  recipe: Recipe | undefined  = undefined;
   id: number;
+  recipeLoaded: boolean = this.recipe === undefined ? false : true;
 
   constructor(private recipeService: RecipeService,
     private router: ActivatedRoute,
@@ -19,7 +20,11 @@ export class RecipeDetailComponent implements OnInit {
   ngOnInit(): void {
     this.router.params.subscribe( params => {
       this.id = +params["id"];
-      this.recipe = this.recipeService.getRecipeById(this.id);
+      this.recipeService.getRecipeById(this.id)
+      .subscribe((response) => {
+        this.recipe = response as Recipe;
+        this.recipeLoaded = true;
+      });
     });
   }
 

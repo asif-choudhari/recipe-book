@@ -36,30 +36,41 @@ export class RecipeEditComponent implements OnInit {
     var description = '';
     var ingredientsArray = new FormArray([]);
 
-    if (this.editMode) {
-      var recipe = this.recipeService.getRecipeById(this.id);
-      name = recipe.name;
-      image = recipe.imagePath;
-      description = recipe.description;
-
-      if (recipe['ingredients']) {
-        for(var ingredient of recipe.ingredients) {
-          ingredientsArray.push(
-            new FormGroup({
-              'name': new FormControl(ingredient.name, Validators.required),
-              'amount': new FormControl(ingredient.amount, Validators.required, AmountValidators.asyncNegativeNumberValidator)
-            })
-          );
-        }
-      }
-    }
-
     this.recipeForm = new FormGroup({
       'name': new FormControl(name, Validators.required),
       'imgUrl': new FormControl(image, Validators.required),
       'description': new FormControl(description, Validators.required),
       'ingredients' : ingredientsArray
     });
+
+    if (this.editMode) {
+      var recipe: Recipe;
+      this.recipeService.getRecipeById(this.id)
+      .subscribe((response) => {
+        recipe = response as Recipe;
+        name = recipe.name;
+        image = recipe.imagePath;
+        description = recipe.description;
+
+        if (recipe['ingredients']) {
+          for(var ingredient of recipe.ingredients) {
+            ingredientsArray.push(
+              new FormGroup({
+                'name': new FormControl(ingredient.name, Validators.required),
+                'amount': new FormControl(ingredient.amount, Validators.required, AmountValidators.asyncNegativeNumberValidator)
+              })
+            );
+          }
+        }
+
+        this.recipeForm = new FormGroup({
+          'name': new FormControl(name, Validators.required),
+          'imgUrl': new FormControl(image, Validators.required),
+          'description': new FormControl(description, Validators.required),
+          'ingredients' : ingredientsArray
+        });
+      });
+    }
   }
 
   onSubmit() {
