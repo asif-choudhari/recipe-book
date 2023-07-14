@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 export class RecipeListComponent implements OnInit, OnDestroy {
   recipes: Recipe[] = [];
   recipeSubscription: Subscription;
+  recipeListLoaded: boolean = false;
 
   constructor(private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) {
 
@@ -22,6 +23,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.recipeSubscription = this.recipeService.recipesChanged$
     .subscribe(recipes => {
       this.recipes = recipes;
+      this.recipeListLoaded = true;
     })
   }
 

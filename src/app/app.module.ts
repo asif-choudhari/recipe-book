@@ -16,7 +16,7 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipeService } from './services/recipe/recipe.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ShortTextPipe } from './services/pipes/short-text.pipe';
+import { ShortTextPipe } from './shared/pipes/short-text.pipe';
 
 @NgModule({
   declarations: [

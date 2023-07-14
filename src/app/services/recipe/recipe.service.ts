@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 export class RecipeService {
   private readonly url = API_CONFIG.baseUrl + '/api/recipe';
   recipesChanged$ = new Subject<Recipe[]>();
+  recipeCache: Recipe;
 
   private recipes: Recipe[] = [];
 
@@ -38,7 +39,7 @@ export class RecipeService {
 
   addRecipe(recipe: Recipe): void {
     this.http.post<Ingredient>(this.url+'/addRecipe', recipe)
-    .subscribe((response) => {
+    .subscribe(() => {
       this.getRecipesList();
       console.log('Added Successfully....');
     })
@@ -46,7 +47,7 @@ export class RecipeService {
 
   editRecipe(id: number, recipe: Recipe): void {
     this.http.put(this.url+'/updateRecipe', recipe, { params: { id: id } })
-    .subscribe((response) => {
+    .subscribe(() => {
       this.getRecipesList();
       console.log('Updated Successfully....');
     });
@@ -54,10 +55,24 @@ export class RecipeService {
 
   deleteRecipe(id: number) {
     this.http.delete(this.url+'/deleteRecipe', { params: { id: id } })
-    .subscribe((response) => {
+    .subscribe(() => {
       this.getRecipesList();
       console.log("Deleted Successfully....");
     });
+  }
+
+  cacheRecipe(recipe: Recipe): void {
+    this.recipeCache = recipe;
+  }
+
+  getCachedRecipe(): Recipe {
+    return this.recipeCache;
+  }
+
+  clearRecipeCache(): void {
+    this.recipeCache = undefined;
+    console.log("Cache Cleaned");
+
   }
 
 }

@@ -5,10 +5,15 @@
     </button>
   </div>
 </div>
-  <hr>
-<div class="row">
+<hr>
+<div class="row" *ngIf="recipeListLoaded">
   <div class="col-xs-12">
     <app-recipe-item *ngFor="let recipe of recipes; let i = index" [recipe]="recipe" [index]="recipe.id"></app-recipe-item>
+  </div>
+</div>
+<div class="row" *ngIf="!recipeListLoaded">
+  <div class="col-xs-12">
+    <h4 *ngIf="!recipeListLoaded">Loading Recipe List...</h4>
   </div>
 </div>
 <hr>

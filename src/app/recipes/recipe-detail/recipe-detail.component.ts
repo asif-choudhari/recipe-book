@@ -9,9 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
-  recipe: Recipe | undefined  = undefined;
+  recipe: Recipe;
   id: number;
-  recipeLoaded: boolean = this.recipe === undefined ? false : true;
+  recipeLoaded: boolean = false;
 
   constructor(private recipeService: RecipeService,
     private router: ActivatedRoute,
@@ -26,6 +26,10 @@ export class RecipeDetailComponent implements OnInit {
         this.recipeLoaded = true;
       });
     });
+  }
+
+  onEditRecipe() {
+    this.recipeService.cacheRecipe(this.recipe);
   }
 
   onDeleteRecipe() {
