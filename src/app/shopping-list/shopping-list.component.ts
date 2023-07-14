@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class ShoppingListComponent implements OnInit, OnDestroy {
   ingredients: Ingredient[] = [];
   slsub: Subscription;
+  shoppingListLoaded: boolean = false;
 
   constructor(private _shoppingListService:ShoppingListService) {
 
@@ -22,6 +23,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       .subscribe(
         (ingredients :Ingredient[]) => {
           this.ingredients = ingredients;
+          this.shoppingListLoaded = true;
         }
       );
 
