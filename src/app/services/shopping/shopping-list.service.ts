@@ -35,7 +35,7 @@ export class ShoppingListService {
   addIngredient(ingredient: Ingredient): void {
     this.http.post<Ingredient>(this.url+'/addIngredient', ingredient)
     .subscribe(
-      (response) => {
+      () => {
         this.getIngredientList();
         console.log('Added Successfully....');
       }
@@ -43,13 +43,17 @@ export class ShoppingListService {
   }
 
   addIngredients(ingredients: Ingredient[]): void {
-    this.ingredients.push(...ingredients);
-    this.ingredientsChanged$.next(this.ingredients.slice());
+    this.http.post<Ingredient>(this.url+'/addIngredients', ingredients)
+    .subscribe(
+      () => {
+        console.log('Added to Shopping List Successfully....');
+      }
+    );
   }
 
   editIngredient(id: number, ingredient: Ingredient): void {
     this.http.put(this.url+'/updateIngredient', ingredient, { params: { id: id } })
-    .subscribe((response) => {
+    .subscribe(() => {
       this.getIngredientList();
       console.log('Updated Successfully....');
     });
@@ -57,7 +61,7 @@ export class ShoppingListService {
 
   deleteIngredient(id: number): void {
     this.http.delete(this.url+'/deleteIngredient', { params: { id: id } })
-    .subscribe((response) => {
+    .subscribe(() => {
       this.getIngredientList();
       console.log("Deleted Successfully....");
     });
