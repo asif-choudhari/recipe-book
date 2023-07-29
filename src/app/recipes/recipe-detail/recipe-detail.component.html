@@ -33,12 +33,13 @@
   <hr>
   <div class="row">
       <div class="col-xs-12">
-          Description : {{recipe.description}}
+          <p class="label_d" style="font-weight: bold;">Description : </p>
+          {{recipe.description}}
       </div>
   </div>
   <div class="row">
       <div class="col-xs-12">
-          <p>Ingedrients : </p>
+          <p class="label_i" style="font-weight: bold;">Ingedrients : </p>
           <p *ngFor="let item of recipe.ingredients; let i = index">
           {{i+1}}. {{item.name}} ({{item.amount}})
           </p>
