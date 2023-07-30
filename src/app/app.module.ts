@@ -17,10 +17,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipeService } from './services/recipe/recipe.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ShortTextPipe } from './shared/pipes/short-text.pipe';
+import { AuthComponent } from './auth/auth.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AuthComponent,
     HeaderComponent,
     RecipesComponent,
     RecipeListComponent,
@@ -30,7 +33,8 @@ import { ShortTextPipe } from './shared/pipes/short-text.pipe';
     ShoppingEditComponent,
     DropdownDirective,
     RecipeEditComponent,
-    ShortTextPipe
+    ShortTextPipe,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

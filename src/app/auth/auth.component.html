@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div *ngIf="loadingSpinner" style="text-align: center;">
+      <app-spinner></app-spinner>
+    </div>
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()" *ngIf="!loadingSpinner">
+      <div class="alert alert-danger" *ngIf="errorExists">
+        <strong>{{ helperText.text }}</strong>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" autocomplete="username" formControlName="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control" autocomplete="new-password" formControlName="password">
+      </div>
+      <div>
+        <button class="btn btn-primary" [disabled]="!authForm.valid">{{ loginMode ? 'Log In' : 'Sign Up'}}</button> |
+        <button class="btn btn-primary" type="button" (click)="onSwitchMode()">Switch to {{ !loginMode ? 'Log In' : 'Sign Up'}}</button>
+      </div>
+    </form>
+  </div>
+</div>
