@@ -4,7 +4,7 @@
       <app-spinner></app-spinner>
     </div>
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()" *ngIf="!loadingSpinner">
-      <div class="alert alert-danger" *ngIf="errorExists">
+      <div class="alert alert-danger" *ngIf="labelDisplay">
         <strong>{{ helperText.text }}</strong>
       </div>
       <div class="form-group">

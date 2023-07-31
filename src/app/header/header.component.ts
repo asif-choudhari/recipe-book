@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -15,8 +15,13 @@ export class HeaderComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.userChanges.subscribe((response) => {
-      this.signedIn = response;
+    this.authService.getSessionUser().then(({data}) => {
+      this.signedIn = data.user === null || undefined ? false: true;
+      if(this.signedIn === false) {
+        this.authService.userChanges.subscribe((change) => {
+          this.signedIn = change
+        });
+      }
     });
   }
 

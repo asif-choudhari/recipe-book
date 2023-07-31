@@ -18,7 +18,7 @@ export class AuthComponent implements OnInit {
   loginMode: boolean = true;
   loadingSpinner: boolean = false;
   authForm: FormGroup;
-  errorExists: boolean = false;
+  labelDisplay: boolean = false;
   helperText: HelperText = {text: '', error: false};
 
   constructor(private authService: AuthService,
@@ -45,17 +45,26 @@ export class AuthComponent implements OnInit {
         : await this.authService.signUp(email, password)
     const { user, session } = data
 
-
-    if (user && this.loginMode) {
+    if (!this.loginMode) {
+      this.helperText = { error: false, text: "Signed Up sucessfull" }
+      this.labelDisplay = true;
+      setTimeout(() => {
+        this.labelDisplay = false;
+      }, 5000);
+      console.log(this.helperText);
+      this.router.navigate(["/auth"]);
+    }
+    else if (user && this.loginMode) {
       console.log("logged in with user : " + user.id);
       const { data, error } = await this.authService.getSession();
+      this.authService.userChanges.next(true);
       this.router.navigate(['']);
     }
     else {
       this.helperText = { error: true, text: error.message }
-      this.errorExists = true;
+      this.labelDisplay = true;
       setTimeout(() => {
-        this.errorExists = false;
+        this.labelDisplay = false;
       }, 5000);
       console.log(this.helperText);
     }

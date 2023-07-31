@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
+  Session,
+  AuthError,
   createClient,
   SupabaseClient,
 } from '@supabase/supabase-js'
@@ -10,9 +12,10 @@ import { Subject } from 'rxjs';
 export class AuthService {
   private supabaseClient: SupabaseClient;
   public userChanges: Subject<boolean> = new Subject<boolean>();
+  public loggedIn:boolean = false;
 
   constructor() {
-    this.supabaseClient = createClient(environment.supabaseUrl, environment.supabaseKey)
+    this.supabaseClient = createClient(environment.supabaseUrl, environment.supabaseKey);
   }
 
   async getSession() {
@@ -28,13 +31,16 @@ export class AuthService {
   }
 
   async signIn(email: string, password: string) {
-    this.userChanges.next(true);
     return await this.supabaseClient.auth.signInWithPassword({ email, password });
   }
 
   async signOut() {
     this.userChanges.next(false);
-    await this.supabaseClient.auth.signOut().catch(console.error)
+    await this.supabaseClient.auth.signOut().catch(console.error);
+  }
+
+  async clearSession() {
+    await this.supabaseClient.auth.setSession(null);
   }
 
 }
