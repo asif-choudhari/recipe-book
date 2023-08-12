@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
 
   async onSignOut() {
     await this.authService.signOut();
+    this.authService.userChanges.next(false);
     this.router.navigate(['/auth']);
   }
 
